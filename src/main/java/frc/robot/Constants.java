@@ -52,7 +52,7 @@ public final class Constants {
     public static final int kRearRightDrivingCanId = 17;
 
     public static final int kFrontLeftTurningCanId = 12;
-    public static final int kRearLeftTurningCanId = 14;
+    public static final int kRearLeftTurningCanId = 2;
     public static final int kFrontRightTurningCanId = 10;
     public static final int kRearRightTurningCanId = 16;
 
@@ -63,7 +63,7 @@ public final class Constants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
     // more teeth will result in a robot that drives faster).
-    public static final int kDrivingMotorPinionTeeth = 14;
+    public static final int kDrivingMotorPinionTeeth = 12;
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
@@ -78,6 +78,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
     public static final double kDriveDeadband = 0.05;
   }
 
@@ -98,5 +99,17 @@ public final class Constants {
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
+  }
+
+  public static final class ShooterConstants {
+    public static final int kShooterMotorID = 33;
+    public static final int kUpperProcessID = 32;
+    public static final int kLowerProcessID = 31;
+
+  }
+
+  public static final class IntakeConstants {
+    public static final int kIntakeMovementMotorID = 22; 
+    public static final int kIntakeWheelsMotorID = 21; 
   }
 }

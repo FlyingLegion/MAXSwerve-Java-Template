@@ -13,16 +13,20 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
@@ -35,9 +39,13 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ShooterSubsystem m_robotShooter = new ShooterSubsystem(this);
+  private final IntakeSubsystem m_robotIntake = new IntakeSubsystem(this);
 
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  public CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  // The operator's
+  public CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -69,15 +77,59 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kR1.value)
+    m_driverController.start()
+        .onTrue(m_robotDrive.zeroHeadingCommand());
+
+    
+    
+    m_driverController.rightTrigger()
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+    
+    m_driverController.leftTrigger()
+        .whileTrue(new RunCommand(
+            () -> m_robotShooter.revUp(),
+            m_robotShooter))
+        .onFalse(new RunCommand(
+            () -> m_robotShooter.stopShooter(), 
+            m_robotShooter));
 
-    new JoystickButton(m_driverController, XboxController.Button.kStart.value)
-        .onTrue(new InstantCommand(
-            () -> m_robotDrive.zeroHeading(),
-            m_robotDrive));
+       
+    m_driverController.rightBumper()
+        .whileTrue(new RunCommand(
+            () -> m_robotIntake.moveDownIntake(),
+            m_robotIntake)); 
+       
+    m_driverController.leftBumper()
+        .whileTrue(new RunCommand(
+            () -> m_robotIntake.moveUpIntake(),
+            m_robotIntake));
+    
+    m_driverController.y()
+        .whileTrue(new RunCommand(
+            () -> m_robotIntake.runIntakeWheel(),
+            m_robotIntake))
+        .onFalse(new RunCommand(() -> m_robotIntake.stopIntake(), m_robotIntake));
+    
+    m_driverController.b()
+        .whileTrue(new RunCommand(
+            () -> m_robotShooter.runProcess(),
+            m_robotShooter))
+        .onFalse(new RunCommand(() -> m_robotShooter.stopShooter(), m_robotShooter));
+    
+
+
+    m_driverController.rightBumper()
+        .whileFalse(new RunCommand(
+            () -> m_robotIntake.stopIntake(),
+            m_robotIntake));
+
+    m_driverController.leftBumper()
+        .whileFalse(new RunCommand(
+            () -> m_robotIntake.stopIntake(),
+            m_robotIntake));
+    
   }
 
   /**

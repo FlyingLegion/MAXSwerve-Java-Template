@@ -15,12 +15,10 @@ import edu.wpi.first.math.controller.PIDController;
 
 
 public class IntakeSubsystem extends SubsystemBase{
-
     private SparkMax m_intakeElevator;
     private SparkMax m_intakeWheels;
 
     public IntakeSubsystem(RobotContainer localRobotContainer) {
-
         m_intakeElevator = new SparkMax(IntakeConstants.kIntakeMovementMotorID, MotorType.kBrushless);
         m_intakeWheels = new SparkMax(IntakeConstants.kIntakeWheelsMotorID, MotorType.kBrushless);
     }
@@ -47,7 +45,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public void runIntakeWheel() {
         m_intakeWheels.set(-1);
-        System.out.println("Hey Levie");
+        System.out.println("Hello Father Lindsay");
     }
 
     public Command stopIntakeCommand() {

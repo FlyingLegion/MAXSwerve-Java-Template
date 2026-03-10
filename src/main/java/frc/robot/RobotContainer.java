@@ -80,57 +80,94 @@ public class RobotContainer {
     m_driverController.start()
         .onTrue(m_robotDrive.zeroHeadingCommand());
 
-    
-    
-    m_driverController.rightTrigger()
+    //setX on x (blue) button
+    m_driverController.x()
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-    
-    m_driverController.leftTrigger()
+            
+    //Timed Shooter Command on right trigger
+    m_driverController.rightTrigger()
         .whileTrue(new RunCommand(
-            () -> m_robotShooter.revUp(),
-            m_robotShooter))
-        .onFalse(new RunCommand(
-            () -> m_robotShooter.stopShooter(), 
+            () -> m_robotShooter.new timedShootCommand(),
             m_robotShooter));
 
-       
+    //Solo Shooter on right bumper
     m_driverController.rightBumper()
         .whileTrue(new RunCommand(
-            () -> m_robotIntake.moveDownIntake(),
-            m_robotIntake)); 
-       
-    m_driverController.leftBumper()
+            () -> m_robotShooter.shooterCommand(-0.45),
+            m_robotShooter))
+        .onFalse(new RunCommand(
+            () -> m_robotShooter.shooterCommand(0), 
+            m_robotShooter));
+
+    //Solo Spindexer on left trigger
+    m_driverController.leftTrigger()
         .whileTrue(new RunCommand(
-            () -> m_robotIntake.moveUpIntake(),
-            m_robotIntake));
-    
+            () -> m_robotShooter.spindexerCommand(-1),
+            m_robotShooter))
+        .onFalse(new RunCommand(
+            () -> m_robotShooter.spindexerCommand(0), 
+            m_robotShooter));
+
+    //Solo Transverse UP on left bumper
+    m_driverController.leftTrigger()
+        .whileTrue(new RunCommand(
+            () -> m_robotShooter.transverseCommand(0.5),
+            m_robotShooter))
+        .onFalse(new RunCommand(
+            () -> m_robotShooter.transverseCommand(0), 
+            m_robotShooter));
+
+    //Solo Transverse DOWN on B (red) button
+    m_driverController.b()
+        .whileTrue(new RunCommand(
+            () -> m_robotShooter.transverseCommand(-0.5),
+            m_robotShooter))
+        .onFalse(new RunCommand(
+            () -> m_robotShooter.transverseCommand(0), 
+            m_robotShooter));
+
+    //CODE THE INTAKE IN AND OUT!!! NOWWWW
+    //Intake In on y (yellow) button
     m_driverController.y()
         .whileTrue(new RunCommand(
             () -> m_robotIntake.runIntakeWheel(),
             m_robotIntake))
-        .onFalse(new RunCommand(() -> m_robotIntake.stopIntake(), m_robotIntake));
+        .onFalse(new RunCommand(
+            () -> m_robotIntake.stopIntake(),
+            m_robotIntake));
     
-    m_driverController.b()
+    //CODE THE INTAKE IN AND OUT!!! NOWWWW
+    //Intake Out on a (green) button
+    m_driverController.a()
         .whileTrue(new RunCommand(
-            () -> m_robotShooter.runProcess(),
-            m_robotShooter))
-        .onFalse(new RunCommand(() -> m_robotShooter.stopShooter(), m_robotShooter));
-    
-
-
-    m_driverController.rightBumper()
-        .whileFalse(new RunCommand(
+            () -> m_robotIntake.runIntakeWheel(),
+            m_robotIntake))
+        .onFalse(new RunCommand(
             () -> m_robotIntake.stopIntake(),
             m_robotIntake));
 
-    m_driverController.leftBumper()
-        .whileFalse(new RunCommand(
+    //CODE THE INTAKE UP AND DOWN!!! NOWWWWW
+    //Chain Lift UP command on dpad up
+    m_driverController.povUp()
+        .whileTrue(new RunCommand(
+            () -> m_robotIntake.runIntakeWheel(),
+            m_robotIntake))
+        .onFalse(new RunCommand(
             () -> m_robotIntake.stopIntake(),
             m_robotIntake));
-    
-  }
+            
+    //CODE THE INTAKE UP AND DOWN!!! NOWWWWW
+    //Chain Lift UP command on dpad down
+    m_driverController.povDown()
+        .whileTrue(new RunCommand(
+            () -> m_robotIntake.runIntakeWheel(),
+            m_robotIntake))
+        .onFalse(new RunCommand(
+            () -> m_robotIntake.stopIntake(),
+            m_robotIntake));
+    }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

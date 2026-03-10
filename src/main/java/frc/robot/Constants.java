@@ -52,7 +52,7 @@ public final class Constants {
     public static final int kRearRightDrivingCanId = 17;
 
     public static final int kFrontLeftTurningCanId = 12;
-    public static final int kRearLeftTurningCanId = 2;
+    public static final int kRearLeftTurningCanId = 14;
     public static final int kFrontRightTurningCanId = 10;
     public static final int kRearRightTurningCanId = 16;
 
@@ -103,8 +103,9 @@ public final class Constants {
 
   public static final class ShooterConstants {
     public static final int kShooterMotorID = 33;
-    public static final int kUpperProcessID = 32;
-    public static final int kLowerProcessID = 31;
+    public static final int kUpperTransverseID = 32;
+    public static final int kLowerTransverseID = 31;
+    public static final int kSpindexerID = 40;
 
   }
 

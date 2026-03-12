@@ -111,7 +111,7 @@ public class RobotContainer {
             m_robotShooter));
 
     //Solo Transverse UP on left bumper
-    m_driverController.leftBumper()
+    m_driverController.leftTrigger()
         .whileTrue(new RunCommand(
             () -> m_robotShooter.transverseCommand(0.5),
             m_robotShooter))

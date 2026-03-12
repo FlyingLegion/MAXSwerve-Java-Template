@@ -21,8 +21,6 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
     public RobotContainer localRobotContainer;
 
-    private double currentShooterSpeed;
-    private PIDController pidConfigs;
     public double shooterVelocity; 
     public double transverseVelocity;
     public double spindexerVelocity;
@@ -33,11 +31,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     //shooter subsystem brance
-    public ShooterSubsystem(RobotContainer localRobotContainer) {
-        pidConfigs = new PIDController(0, 0, 0);
+    public ShooterSubsystem(RobotContainer m_robotContainer) {
+        localRobotContainer = m_robotContainer;
+
         m_shooter = new SparkMax(ShooterConstants.kShooterMotorID, MotorType.kBrushless);
-        m_transverse = new SparkMax(ShooterConstants.kUpperTransverseID, MotorType.kBrushless);
+        m_transverse = new SparkMax(ShooterConstants.kTransverseID, MotorType.kBrushless);
         m_spindexer = new SparkMax(ShooterConstants.kSpindexerID, MotorType.kBrushless);
+
         shooterVelocity = 0;
         transverseVelocity = 0;
         spindexerVelocity = 0;
@@ -48,6 +48,7 @@ public class ShooterSubsystem extends SubsystemBase {
         m_shooter.set(shooterVelocity);
         m_transverse.set(transverseVelocity);
         m_spindexer.set(spindexerVelocity);
+        //System.out.println(shooterVelocity + ", " + transverseVelocity + ", " + spindexerVelocity);
     }
 
 
@@ -70,6 +71,7 @@ public class ShooterSubsystem extends SubsystemBase {
     //Basic Commands to trigger functions
     /** Positive = In<p>Negative = Out */
     public Command shooterCommand(double velo){
+        System.out.println("Shooter Command calling runshooter function " + velo);
         return this.run(() -> runShooter(velo));
     }
     
@@ -84,7 +86,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     /**
-     * runAll function, call through runAllCommand(v1,v2,v3)
+     * <b>SHOOTER</b>
+     * <p>runAll function, call through Shooter runAllCommand(v1,v2,v3)
      */
     public void runAll(double v1, double v2, double v3) {
         shooterVelocity = v1;
@@ -93,7 +96,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     /**
-     * This command is capable of running all the different parts of the shooter at once
+     * <b>SHOOTER</b>
+     * <p>This command is capable of running all the different parts of the shooter at once
      * <p>v1 = shooter velocity
      * <p>v2 = transverse velocity
      * <p>v3 = spindexer velocity
@@ -102,6 +106,10 @@ public class ShooterSubsystem extends SubsystemBase {
         return this.run(() -> runAll(v1,v2,v3));
     }
 
+    /**
+     * <b>SHOOTER</b>
+     * <p>stopAll function, call through stopAllCommand()
+     */
     public void stopAll() {
         shooterVelocity = 0;
         transverseVelocity = 0; 
@@ -109,8 +117,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     /**
-     * Stops all different parts of the shooter at once
-     * <p>Same as runAllCommand(0,0,0)
+     * <b>SHOOTER</b>
+     * <p>Stops all different parts of the shooter at once
+     * <p>Same as Shooter runAllCommand(0,0,0)
      */
     public Command stopAllCommand() {
         return this.run(() -> stopAll());
@@ -118,7 +127,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /**
      * Returns the shooter's encoder's velocity value in RPM
-     * <p>Currently very inaccurate and off by a factor of 30
+     * <p>Currently very inaccurate and off by a factor of something about 30
      */
     public double getShooterRPM() {
         return m_shooter.getAlternateEncoder().getVelocity();
@@ -135,11 +144,13 @@ public class ShooterSubsystem extends SubsystemBase {
         @Override
         public void initialize() {
             startTime = Timer.getFPGATimestamp();
+            System.out.println("Timed Shooter Command Initialized");
         }
 
         @Override
         public void execute() {
             timeElapsed = Timer.getFPGATimestamp() - startTime;
+            System.out.println("Timed Shooter Command Running: " + timeElapsed);
             if(timeElapsed > 0 && timeElapsed < 1) {
                 runShooter(-0.45);
             }
@@ -162,6 +173,7 @@ public class ShooterSubsystem extends SubsystemBase {
         @Override
         public void end(boolean interrupted) {
             stopAllCommand();
+            System.out.println("Timed Shooter Command Ended");
         }
     }
 }

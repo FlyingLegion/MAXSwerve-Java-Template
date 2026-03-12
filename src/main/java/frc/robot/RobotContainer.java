@@ -88,7 +88,7 @@ public class RobotContainer {
             
     //Timed Shooter Command on right trigger
     m_driverController.rightTrigger()
-        .whileTrue(new RunCommand(
+        .onTrue(new RunCommand(
             () -> m_robotShooter.new timedShootCommand(),
             m_robotShooter));
 
@@ -111,7 +111,7 @@ public class RobotContainer {
             m_robotShooter));
 
     //Solo Transverse UP on left bumper
-    m_driverController.leftTrigger()
+    m_driverController.leftBumper()
         .whileTrue(new RunCommand(
             () -> m_robotShooter.transverseCommand(0.5),
             m_robotShooter))
@@ -128,44 +128,40 @@ public class RobotContainer {
             () -> m_robotShooter.transverseCommand(0), 
             m_robotShooter));
 
-    //CODE THE INTAKE IN AND OUT!!! NOWWWW
     //Intake In on y (yellow) button
     m_driverController.y()
         .whileTrue(new RunCommand(
-            () -> m_robotIntake.runIntakeWheel(),
+            () -> m_robotIntake.intakeWheelCommand(-1),
             m_robotIntake))
         .onFalse(new RunCommand(
-            () -> m_robotIntake.stopIntake(),
+            () -> m_robotIntake.intakeWheelCommand(0),
             m_robotIntake));
     
-    //CODE THE INTAKE IN AND OUT!!! NOWWWW
     //Intake Out on a (green) button
     m_driverController.a()
         .whileTrue(new RunCommand(
-            () -> m_robotIntake.runIntakeWheel(),
+            () -> m_robotIntake.intakeWheelCommand(1),
             m_robotIntake))
         .onFalse(new RunCommand(
-            () -> m_robotIntake.stopIntake(),
+            () -> m_robotIntake.intakeWheelCommand(0),
             m_robotIntake));
 
-    //CODE THE INTAKE UP AND DOWN!!! NOWWWWW
     //Chain Lift UP command on dpad up
     m_driverController.povUp()
         .whileTrue(new RunCommand(
-            () -> m_robotIntake.runIntakeWheel(),
+            () -> m_robotIntake.intakeElevatorCommand(-1),
             m_robotIntake))
         .onFalse(new RunCommand(
-            () -> m_robotIntake.stopIntake(),
+            () -> m_robotIntake.intakeElevatorCommand(0),
             m_robotIntake));
             
-    //CODE THE INTAKE UP AND DOWN!!! NOWWWWW
     //Chain Lift UP command on dpad down
     m_driverController.povDown()
         .whileTrue(new RunCommand(
-            () -> m_robotIntake.runIntakeWheel(),
+            () -> m_robotIntake.intakeElevatorCommand(1),
             m_robotIntake))
         .onFalse(new RunCommand(
-            () -> m_robotIntake.stopIntake(),
+            () -> m_robotIntake.intakeElevatorCommand(0),
             m_robotIntake));
     }
 

@@ -103,8 +103,7 @@ public final class Constants {
 
   public static final class ShooterConstants {
     public static final int kShooterMotorID = 33;
-    public static final int kUpperTransverseID = 32;
-    public static final int kLowerTransverseID = 31;
+    public static final int kTransverseID = 32;
     public static final int kSpindexerID = 40;
 
   }
